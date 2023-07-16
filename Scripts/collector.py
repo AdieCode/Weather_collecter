@@ -1,5 +1,8 @@
 import requests
 import pandas as pd
+from datetime import datetime
+import time
+import keyboard
 
 # Replace 'YOUR_API_KEY' with your actual API key
 def getWeatherData(api_key, city):
@@ -34,7 +37,10 @@ def getWeatherData(api_key, city):
 
         #convert form Json to a python Object
         data = response.json()
-        return data 
+
+        #add time data was extracted
+        data["time"] = datetime.now().time()
+        return data
     
     #error handeling
     except requests.exceptions.RequestException as e:
@@ -85,15 +91,26 @@ def DisplayWeatherData(data):
         temperature = round(int(data['main']['temp']) - 273.15,2)
         humidity = data['main']['humidity']
         weather_description = data['weather'][0]['description']
+        time  = data['time']
         print(f'City: {city} ')
         print(f'Temperature: {temperature} °C')
         print(f'Humidity: {humidity}%')
         print(f'Weather Description: {weather_description}')
+        print(f"Time : {time}")
+        print("")
     except:
         print('Error occurred while retrieving weather data.')
 
 
-data = getWeatherData("aa46ac6029a38bc1979e0ae764561a9c","Pretoria")
-addDataToCsv(data,"Data/weather_data_raw.csv")
-DisplayWeatherData(data)
+
+
+while True:
+    if keyboard.is_pressed('q'):
+        break
+    data = getWeatherData("c2e1803fc39e433934faca8b6c413dd8","Pretoria")
+    addDataToCsv(data,"Data/weather_data_raw.csv")
+    DisplayWeatherData(data)
+    time.sleep(900)
+
+print("Script was stoped")
 
