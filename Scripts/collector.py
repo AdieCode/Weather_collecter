@@ -102,15 +102,7 @@ def DisplayWeatherData(data):
         print('Error occurred while retrieving weather data.')
 
 
-
-
-while True:
-    if keyboard.is_pressed('q'):
-        break
-    data = getWeatherData("c2e1803fc39e433934faca8b6c413dd8","Pretoria")
-    addDataToCsv(data,"Data/weather_data_raw.csv")
-    DisplayWeatherData(data)
-    time.sleep(900)
-
-print("Script was stoped")
+data = getWeatherData("YOUR_API_KEY","CITY_OF_CHOICE")
+addDataToCsv(data,"Data/weather_data_raw.csv")
+DisplayWeatherData(data)
 
