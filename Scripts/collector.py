@@ -93,7 +93,7 @@ def DisplayWeatherData(data):
         print('Error occurred while retrieving weather data.')
 
 
-data = getWeatherData("aa46ac6029a38bc1979e0ae764561a9c","Pretoria")
+data = getWeatherData("YOUR_API_KEY","CITY_OF_CHOICE")
 addDataToCsv(data,"Data/weather_data_raw.csv")
 DisplayWeatherData(data)
 
