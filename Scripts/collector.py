@@ -2,9 +2,8 @@ import requests
 import pandas as pd
 from datetime import datetime
 import time
-import keyboard
 
-# Replace 'YOUR_API_KEY' with your actual API key
+
 def getWeatherData(api_key, city):
     #description
     """
@@ -30,6 +29,7 @@ def getWeatherData(api_key, city):
     name  :  Johannesburg
     cod  :  200
     """
+
     # Make the API request
     try:
         url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}'
@@ -52,6 +52,7 @@ def getWeatherData(api_key, city):
         print("HTTP error occurred:", e)
 
 
+
 def addDataToCsv(data,csv_file):
     """
     Add's the data given to a csv file
@@ -69,7 +70,11 @@ def addDataToCsv(data,csv_file):
         df = pd.DataFrame()
     except pd.errors.EmptyDataError:
         df = pd.DataFrame()
-        
+    except:
+        with open(csv_file,"w") as file:
+            pass
+        df = pd.DataFrame()
+
     new_data = pd.DataFrame()
 
     for key, value in data.items():
@@ -77,6 +82,8 @@ def addDataToCsv(data,csv_file):
 
     df = df._append(pd.DataFrame(new_data), ignore_index=True)
     df.to_csv(csv_file,index=False)
+
+
 
 def DisplayWeatherData(data):
     """
@@ -102,7 +109,15 @@ def DisplayWeatherData(data):
         print('Error occurred while retrieving weather data.')
 
 
-data = getWeatherData("YOUR_API_KEY","CITY_OF_CHOICE")
-addDataToCsv(data,"Data/weather_data_raw.csv")
-DisplayWeatherData(data)
+
+file = open("secret.txt","r")
+content = file.read().split(",")
+api_key = content[0]
+city = content[1]
+
+while True:
+    data = getWeatherData(api_key,city)
+    addDataToCsv(data,"Data/weather_data_raw.csv")
+    DisplayWeatherData(data)
+    time.sleep(600)
 

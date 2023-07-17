@@ -1,3 +1,5 @@
 # Ignore specific files
 secret.txt
+# weather_data_raw.csv
+# weather.csv
 
