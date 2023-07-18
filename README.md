@@ -1,6 +1,6 @@
 # Weather_collecter
-this project collects data from the openweather API and store's the data to be processed and analyzid 
-for futher more in depth information.
+this project collects data from the Open Weather API and stores the data to be processed and analyzed.
+for further, more in-depth information.
 
 <b>collector.py</b>
 ~ collects data from the openweather API and stores it to a csv file.
