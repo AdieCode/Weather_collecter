@@ -1,5 +1,6 @@
 # Ignore specific files
 secret.txt
+forme.txt
 # weather_data_raw.csv
 # weather.csv
 
