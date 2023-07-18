@@ -52,6 +52,36 @@ def getWeatherData(api_key, city):
         print("HTTP error occurred:", e)
 
 
+def getCO2Data(api_key, lat, lon):
+    #description
+    """
+    function accepts (api_key, city) to access the open weather api and get 
+    the city's CO2 data and returns the data as a dictionary
+
+    @recieve (api_key <-- String, city <-- String)
+    @return  (data --> Dictionary)
+    """
+
+    # Make the API request
+    try:
+        #make API request
+        url = f'http://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={api_key}'
+        response = requests.get(url)
+
+        #convert form Json to a python Object
+        data = response.json()
+
+        return data
+    
+    #error handeling
+    except requests.exceptions.RequestException as e:
+    # Handle connection errors, timeouts, or other request-related exceptions
+        print("Request error:", e)
+
+    except requests.exceptions.HTTPError as e:
+        # Handle HTTP error responses (status codes 4xx or 5xx)
+        print("HTTP error occurred:", e)
+
 
 def addDataToCsv(data,csv_file):
     """
@@ -95,7 +125,7 @@ def DisplayWeatherData(data):
     """
     try :
         city = data["name"]
-        temperature = round(int(data['main']['temp']) - 273.15,2)
+        temperature = round(int(data['main']['temp']) - 273.15)
         humidity = data['main']['humidity']
         weather_description = data['weather'][0]['description']
         time  = data['time']
@@ -106,18 +136,25 @@ def DisplayWeatherData(data):
         print(f"Time : {time}")
         print("")
     except:
-        print('Error occurred while retrieving weather data.')
+        print('Error occurred while displaying weather data.')
 
 
 
 file = open("secret.txt","r")
-content = file.read().split(",")
-api_key = content[0]
-city = content[1]
+api_key = file.read()
+
+citys = ["Pretoria","Johannesburg","Centurion","Midrand","Sandton"]
 
 while True:
-    data = getWeatherData(api_key,city)
-    addDataToCsv(data,"Data/weather_data_raw.csv")
-    DisplayWeatherData(data)
+    for city in citys:
+        try:
+            weather_data = getWeatherData(api_key,city)
+            co2_data = getCO2Data(api_key,weather_data["coord"]["lat"],weather_data["coord"]["lon"])
+            #addDataToCsv(weather_data,"Data/weather_data_raw.csv")
+            addDataToCsv(co2_data,"Data/co2_data_raw.csv")
+            DisplayWeatherData(weather_data)
+        except:
+            print("error occurred while extracting the data")
+
     time.sleep(600)
 
