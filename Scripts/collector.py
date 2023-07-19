@@ -150,7 +150,7 @@ while True:
         try:
             weather_data = getWeatherData(api_key,city)
             co2_data = getCO2Data(api_key,weather_data["coord"]["lat"],weather_data["coord"]["lon"])
-            #addDataToCsv(weather_data,"Data/weather_data_raw.csv")
+            addDataToCsv(weather_data,"Data/weather_data_raw.csv")
             addDataToCsv(co2_data,"Data/pollution_data_raw.csv")
             DisplayWeatherData(weather_data)
         except:
